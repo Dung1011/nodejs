@@ -9,5 +9,8 @@ let initWebRoutes = (app) => {
 
     return app.use("/", router);
 }
+router.get('/homepage', (req, res) => {
+    res.render('homepage');  
+});
 
 module.exports = initWebRoutes;

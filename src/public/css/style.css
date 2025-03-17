@@ -1,0 +1,31 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.article {
+    display: flex;
+    max-width: 700px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+.article img {
+    width: 200px;
+    height: auto;
+    margin-right: 15px;
+    border-radius: 5px;
+}
+.article-content {
+    flex: 1;
+}
+.article-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.article-description {
+    color: #555;
+    font-size: 14px;
+}
+.article-time {
+    color: #888;
+    font-size: 12px;
+}
