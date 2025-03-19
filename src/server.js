@@ -1,18 +1,20 @@
 import express from "express";
 import bodyParser from "body-parser";
-import viewEngine from "./config/viewEngine.js";
-import initWebRoutes from './route/web.js';
 import mysql from 'mysql2';  
+import path from "path";
+import { fileURLToPath } from "url";
 import dotenv from 'dotenv';
 dotenv.config();
 let app = express();
 
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 // Config app
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
-viewEngine(app);
-initWebRoutes(app);
+
 
 app.use(express.static('src/public'));
 app.use('/uploads', express.static('src/public/uploads'));
@@ -33,20 +35,34 @@ db.connect((err) => {
     }
 });
 
-
-app.get('/test-mysql', (req, res) => {
-    db.query('SELECT * FROM articles', (err, results) => {
+// lấy dữ liệu bảng articles
+app.get("/api/articles", (req, res) => {
+    db.query("SELECT * FROM articles", (err, results) => {
+      if (err) {
+        res.status(500).send("Lỗi truy vấn: " + err.message);
+      } else {
+        res.json(results); 
+      }
+    });
+  });
+  app.get("/api/categories", (req, res) => {
+    db.query("SELECT * FROM categories", (err, results) => {
         if (err) {
-            res.status(500).send('Lỗi truy vấn: ' + err.message);
+            res.status(500).send("Lỗi truy vấn: " + err.message);
         } else {
-            console.log("Dữ liệu lấy từ DB:", results); // Kiểm tra dữ liệu
-            res.render("homepage", { articles: results }); 
+            res.json(results);
         }
     });
-});
+});   
 
-let port = process.env.PORT || 6969;
-app.listen(port, () => {
-    console.log(`Truy cập: http://localhost:${port}/test-mysql` );
+  app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname,  "views", "homepage.html"));
 });
+  
+  let port = process.env.PORT || 8080;
+  app.listen(port, () => {
+    console.log(`Truy cập: http://localhost:${port}`);
+    console.log(`API: http://localhost:${port}/api/articles`);
+  });
 
+  
