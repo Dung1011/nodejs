@@ -252,7 +252,7 @@ function validateEmail() {
 //render dữ liệu
 async function fetchAndRenderArticles() {
     try {
-        const response = await fetch('/api/articles'); // Gọi API lấy dữ liệu từ MySQL
+        const response = await fetch('/api/articles'); 
         const articles = await response.json();
 
         if (articles.length === 0) {
@@ -311,25 +311,65 @@ async function fetchAndRenderArticles() {
 				<img src="${article2_2.image_url}" alt="${article2_2.title}" />
 			</div>
 		`;
-	}
-
-        // Góc nhìn (main_content2_3)
-        if (otherArticles[2]) {
-            const article2_3 = otherArticles[2];
-            document.querySelector('.main_content2').innerHTML += `
-			<div class="main_content2_3">
-				<p>
-					<a href="/articles/${article2_3.article_id}">
+	    }
+		if (otherArticles[2]) {
+			const article2_3 = otherArticles[2];
+			document.querySelector('.main_content2').innerHTML += `
+			<div class ="main_content2_3">      
+			  <p class="title" style="color: #a00; font-weight: bold;">${article2_3.category_name}</p>
+				
+					<a href="/articles/${article2_3.article_id}" style="color: #000; text-decoration: none;">
 						${article2_3.title}
 					</a>
+				
+				<p style="color: #555;">
+					${article2_3.content}
 				</p>
-				<img  src="${article2_3.image_url}" alt="${article2_3.title}"  />
-			</div>
-		`;
+				<div style="display: flex; align-items: center; ">
+					<span style="color: #000; font-style: italic;">Bùi Phú Châu</span>
+					<img src="https://i1-vnexpress.vnecdn.net/2017/11/17/jessepngpng-1510857625.png?w=100&h=100&q=100&dpr=2&fit=crop&s=Idkqaz_9ddgZIHvmwYxIBQ" 
+						style="width: 70px; height: 40px; border-radius: 50%; margin-left:px;" 
+						alt="Tác giả" />
+				</div>
 
-		
-	}
-    } catch (error) {
+			</div>
+			`;
+		}
+
+		//supporting_content_left
+		// Thêm phần hỗ trợ vào main content
+        // Thêm phần hỗ trợ vào main content
+		const supportingContentLeft = document.querySelector('.supporting_content_left');
+        supportingContentLeft.innerHTML = '';
+
+        otherArticles.slice(3, 7).forEach(article => {
+            supportingContentLeft.innerHTML += `
+                <div class="supporting_content_item" style="display: flex; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                    <img src="${article.image_url}" alt="${article.title}" style="width: 90px; height: 70px; object-fit: cover; margin-right: 10px;">
+                    <div>
+                        <h3 style="margin: 0; font-size: 14px;">
+                            <a href="/articles/${article.article_id}" style="text-decoration: none; color: #000; font-weight: bold;">
+                                ${article.title}
+                            </a>
+                        </h3>
+                        <p style="margin: 5px 0; color: #555; font-size: 12px;">${article.content}</p>
+                    </div>
+                </div>
+            `;
+        });
+
+
+
+
+
+	
+
+	
+	    
+	
+	
+
+ }  catch (error) {
         console.error('Lỗi khi lấy dữ liệu từ API:', error);
     }
 }

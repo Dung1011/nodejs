@@ -366,10 +366,11 @@ right:0px;
 	justify-content: space-between;
 	height: 200px;
 	width: 700px;
+    gap:10px;
 }
 .supporting_content_VN{
 	border-bottom: 1px solid #e5e5e5;
-	padding-bottom: 10px;
+	padding-bottom: 20px;
 }
 .supporting_content_GV{
 	border-bottom: 1px solid #e5e5e5;
@@ -394,7 +395,7 @@ right:0px;
 }
 .supporting_content {
 	display: flex;
-	margin-top: 30px;
+	
 
 }
 

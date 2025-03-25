@@ -36,15 +36,7 @@ db.connect((err) => {
 });
 
 // lấy dữ liệu bảng articles
-app.get("/api/articles", (req, res) => {
-    db.query("SELECT * FROM articles", (err, results) => {
-      if (err) {
-        res.status(500).send("Lỗi truy vấn: " + err.message);
-      } else {
-        res.json(results); 
-      }
-    });
-  });
+
   app.get("/api/categories", (req, res) => {
     db.query("SELECT * FROM categories", (err, results) => {
         if (err) {
@@ -58,6 +50,24 @@ app.get("/api/articles", (req, res) => {
   app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname,  "views", "homepage.html"));
 });
+
+app.get("/api/articles", (req, res) => {
+  const query = `
+      SELECT articles.*, categories.category_name 
+      FROM articles
+      JOIN categories ON articles.category_id = categories.category_id
+  `;
+
+  db.query(query, (err, results) => {
+      if (err) {
+          res.status(500).send("Lỗi truy vấn: " + err.message);
+      } else {
+          res.json(results);
+      }
+  });
+});
+
+
   
   let port = process.env.PORT || 8080;
   app.listen(port, () => {
