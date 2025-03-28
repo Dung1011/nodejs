@@ -56,6 +56,8 @@ app.get("/api/articles", (req, res) => {
       SELECT articles.*, categories.category_name 
       FROM articles
       JOIN categories ON articles.category_id = categories.category_id
+      ORDER BY article_id DESC
+      
   `;
 
   db.query(query, (err, results) => {

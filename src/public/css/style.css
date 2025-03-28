@@ -368,6 +368,9 @@ right:0px;
 	width: 700px;
     gap:10px;
 }
+.supporting_content_item h3 a:hover {
+    color: #007bff; 
+}
 .supporting_content_VN{
 	border-bottom: 1px solid #e5e5e5;
 	padding-bottom: 20px;
@@ -461,6 +464,7 @@ right:0px;
 }
 .small {
 	width: 100%;
+	padding:10px;
 }
 .small1 {
 	list-style: none;
@@ -475,18 +479,27 @@ right:0px;
 	color: #b52759;
 }
 .ct1 {
-	padding-top: 20px;
+	padding-top: 10px;
 }
 .hagl h1 a {
 	font-size: 14px;
+	line-height: 1.2;
+	display: block;
 }
 .hagl {
 	display: flex;
-	gap: 20px;
+	gap: 10px;
 	padding-left: 20px;
+	
+	justify-content: space-around;
 }
 .hagl_pr {
 	border-right: 1px solid #e5e5e5;
+	width:200px;
+	padding: 0 10px 0 0;
+}
+.wl {
+	width:200px;
 }
 .border10 {
 	padding: 1px;
@@ -495,13 +508,24 @@ right:0px;
 }
 .jeju1 {
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 	width: 100%;
+	margin-left: 20px;
+	
+	padding-bottom: 10px;
+}
+.jeju1_ct{
+	width:180px;
+	gap:10px;
+}
+.jeju1_ct a b{
+	font-size:14px;
 }
 .jeju {
 	display: flex;
 	padding-left: 20px;
 	padding-top: 10px;
+	
 }
 .border4 {
 	padding: 1px 0 0 0;
@@ -512,12 +536,86 @@ right:0px;
 .jeju1_ct a:hover {
 	color: blue;
 }
-.border5 {
-	padding: 1px 0 0 0;
-	background-color: #e5e5e5;
-	margin-top: 20px;
-	margin-left: 10px;
+.bds h1 a {
+	font-size: 14px;
+	line-height: 1.2;
+	display: block;
 }
+.bds {
+	display: flex;
+	gap: 10px;
+	padding-left: 20px;
+		
+	justify-content: space-around;
+	}
+.bds_pr {
+		border-right: 1px solid #e5e5e5;
+		width:200px;
+		padding: 0 10px 0 0;
+}
+.bds_right {
+		width:200px;
+}
+	
+.bds_bottom {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		margin-left: 20px;
+}
+.bds_ct{
+		width:180px;
+		gap:10px;
+}
+.bds_ct a b{
+		font-size:14px;
+}
+	
+	
+.bds_ct a:hover {
+		color: blue;
+}
+.thethao {
+	display: flex;
+	gap: 10px;
+	padding-left: 20px;
+	justify-content: space-around;
+	}
+	.thethao_pr {
+		border-right: 1px solid #e5e5e5;
+		width:200px;
+		padding: 0 10px 0 0;
+	}
+	.thethao h1 a{
+		font-size: 14px;
+		line-height: 1.2;
+		display: block;
+	}
+	.thethao_right {
+		width:200px;
+	}
+	
+	.thethao_bottom {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		margin-left: 20px;
+	}
+	.thethao_ct {
+		width:180px;
+		gap:10px;
+	}
+	.thethao_ct a b {
+		font-size:14px;
+	}
+	
+	.thethao_ct a:hover {
+		color: blue;
+	}
+
+	.thethao_ct a b{
+		font-size:14px;
+	}
 .laisuat_2 {
 	display: flex;
 	list-style: none;
@@ -549,6 +647,14 @@ right:0px;
 .usd1 {
 	display: flex;
 	gap: 5px;
+	padding:10px;
+}
+.usd1 a img{
+	width: 80px;
+	height:48px;
+}
+.usd2{
+	padding-top: 10px;
 }
 .usd1 h1 {
 	font-size: 15px;
@@ -557,7 +663,7 @@ right:0px;
 	display: flex;
 	margin-left: 20px;
 	background-color: #f3f6fc;
-	gap: 20px;
+	
 }
 .schedule {
 	display: flex;
@@ -633,7 +739,11 @@ right:0px;
 	width: 12px;
 	height: 8px;
 }
-.CTR1 {
+
+.CTR2 {
+	padding-top: 10px;
+}
+.CTR3 {
 	padding-top: 10px;
 }
 .video {

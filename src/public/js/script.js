@@ -248,12 +248,15 @@ function validateEmail() {
 	
 }
 
-
+ 
 //render dữ liệu
 async function fetchAndRenderArticles() {
+	
     try {
         const response = await fetch('/api/articles'); 
         const articles = await response.json();
+		articles.sort((a, b) => a.article_id - b.article_id);
+        console.log("Danh sách bài viết sau khi sắp xếp:", articles);
 
         if (articles.length === 0) {
             document.querySelector('.main_content').innerHTML = '<p>Không có bài viết nào.</p>';
@@ -281,11 +284,11 @@ async function fetchAndRenderArticles() {
         `;
 
        
-        const otherArticles = articles.slice(1); 
+        const otherArticles = articles.slice(0); 
 
         // Bài viết phụ 1 (main_content2_1)
-        if (otherArticles[0]) {
-            const article2_1 = otherArticles[0];
+        if (otherArticles[1]) {
+            const article2_1 = otherArticles[1];
             document.querySelector('.main_content2').innerHTML += `
                 <div class="main_content2_1">
                     <p>
@@ -299,8 +302,8 @@ async function fetchAndRenderArticles() {
         }
 
         // Bài viết phụ 2 (main_content2_2)
-        if (otherArticles[1]) {
-            const article2_2 = otherArticles[1];
+        if (otherArticles[2]) {
+            const article2_2 = otherArticles[2];
 			document.querySelector('.main_content2').innerHTML += `
 			<div class="main_content2_2">
 				<p>
@@ -312,8 +315,8 @@ async function fetchAndRenderArticles() {
 			</div>
 		`;
 	    }
-		if (otherArticles[2]) {
-			const article2_3 = otherArticles[2];
+		if (otherArticles[3]) {
+			const article2_3 = otherArticles[3];
 			document.querySelector('.main_content2').innerHTML += `
 			<div class ="main_content2_3">      
 			  <p class="title" style="color: #a00; font-weight: bold;">${article2_3.category_name}</p>
@@ -336,37 +339,172 @@ async function fetchAndRenderArticles() {
 			`;
 		}
 
-		//supporting_content_left
+		
 		// Thêm phần hỗ trợ vào main content
-        // Thêm phần hỗ trợ vào main content
+       
 		const supportingContentLeft = document.querySelector('.supporting_content_left');
         supportingContentLeft.innerHTML = '';
 
-        otherArticles.slice(3, 7).forEach(article => {
+        otherArticles.slice(4, 14).forEach(article => {
             supportingContentLeft.innerHTML += `
-                <div class="supporting_content_item" style="display: flex; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                    <img src="${article.image_url}" alt="${article.title}" style="width: 90px; height: 70px; object-fit: cover; margin-right: 10px;">
-                    <div>
-                        <h3 style="margin: 0; font-size: 14px;">
+                <div class="supporting_content_item" style="  border-bottom: 1px solid #eee; padding-bottom: 10px;">
+				        <h3 style="  font-size: 14px;">
                             <a href="/articles/${article.article_id}" style="text-decoration: none; color: #000; font-weight: bold;">
                                 ${article.title}
                             </a>
                         </h3>
-                        <p style="margin: 5px 0; color: #555; font-size: 12px;">${article.content}</p>
+                    
+                    <div style ="display:flex; margin-top:10px;">
+                        <img src="${article.image_url}" alt="${article.title}" style="width: 146px; height: 87px; object-fit: cover; margin-right: 10px;">
+                        <p style="margin: 5px 0; color: #555; font-size: 14px; width:260px; height:77px;">${article.content}</p>
                     </div>
                 </div>
             `;
         });
+		
+		const kinhDoanhArticles = articles.filter(article => article.category_id === 5)
+		
+        // ==== KINH DOANH 
+        const haglContainer = document.querySelector(".hagl");
+        haglContainer.innerHTML = "";
+
+        if (kinhDoanhArticles[0]) {
+            const article1 = kinhDoanhArticles[0];
+            haglContainer.innerHTML += `
+                <div class="hagl_img">
+                    <a href="/articles/${article1.article_id}">
+                        <img src="${article1.image_url}" alt="${article1.title}" style="width: 225px">
+                    </a>
+                </div>
+                <div class="hagl_pr">
+                    <h1>
+                        <a href="/articles/${article1.article_id}">${article1.title}</a>
+                    </h1>
+                    <p>
+                        <a href="/articles/${article1.article_id}">${article1.content}...</a>
+                    </p>
+                </div>
+            `;
+        }
+        if (kinhDoanhArticles[1]) {
+            const article2 = kinhDoanhArticles[1];
+            haglContainer.innerHTML += `
+                <div class="wl">
+                    <h1>
+                        <a href="/articles/${article2.article_id}">${article2.title}</a>
+                    </h1>
+                    <p>
+                        <a href="/articles/${article2.article_id}">${article2.content}...</a>
+                    </p>
+                </div>
+            `;
+        }
+		const jejuContainer = document.querySelector(".jeju1");
+        jejuContainer.innerHTML = "";
+
+        kinhDoanhArticles.slice(2, 5).forEach (article => { 
+             jejuContainer.innerHTML += `
+                <li class="jeju1_ct">
+                    <a href="/articles/${article.article_id}">
+                      <b>${article.title}</b>
+                    </a>
+                </li>
+            `;
+        });
 
 
+		const batdongSanArticles = articles.filter(article => article.category_id === 11)
+		
+        // Bất động sản
+        const bdsContainer = document.querySelector(".bds");
+        bdsContainer.innerHTML = "";
 
+        if (batdongSanArticles[0]) {
+            const article1 = batdongSanArticles[0];
+            bdsContainer.innerHTML += `
+                <div class="bds_img">
+                    <a href="/articles/${article1.article_id}">
+                        <img src="${article1.image_url}" alt="${article1.title}" style="width: 225px">
+                    </a>
+                </div>
+                <div class="bds_pr">
+                    <h1>
+                        <a href="/articles/${article1.article_id}">${article1.title}</a>
+                    </h1>
+                    <p>
+                        <a href="/articles/${article1.article_id}">${article1.content}...</a>
+                    </p>
+                </div>
+            `;
+        }
+        if (batdongSanArticles[1]) {
+            const article2 = batdongSanArticles[1];
+            bdsContainer.innerHTML += `
+                <div class="bds_right">
+                    <h1>
+                        <a href="/articles/${article2.article_id}">${article2.title}</a>
+                    </h1>
+                    <p>
+                        <a href="/articles/${article2.article_id}">${article2.content}...</a>
+                    </p>
+                </div>
+            `;
+        }
+		const bdsBottomContainer = document.querySelector(".bds_bottom");
+        bdsBottomContainer.innerHTML = "";
 
+        batdongSanArticles.slice(2, 5).forEach (article => { 
+             bdsBottomContainer.innerHTML += `
+                <li class="bds_ct">
+                    <a href="/articles/${article.article_id}">
+                      <b>${article.title}</b>
+                    </a>
+                </li>
+            `;
+        });
 
-	
+		//thể thao
+		const theThaoArticles = articles.filter(article => article.category_id === 1);
+        const theThaoContainer = document.querySelector(".thethao");
+        theThaoContainer.innerHTML = "";
 
-	
-	    
-	
+        if (theThaoArticles[0]) {
+            const article1 = theThaoArticles[0];
+            theThaoContainer.innerHTML += `
+                <div class="thethao_img">
+                    <a href="/articles/${article1.article_id}">
+                        <img src="${article1.image_url}" alt="${article1.title}" style="width: 225px">
+                    </a>
+                </div>
+                <div class="thethao_pr">
+                    <h1><a href="/articles/${article1.article_id}">${article1.title}</a></h1>
+                    <p><a href="/articles/${article1.article_id}">${article1.content}...</a></p>
+                </div>
+            `;
+        }
+
+        if (theThaoArticles[1]) {
+            const article2 = theThaoArticles[1];
+            theThaoContainer.innerHTML += `
+                <div class="thethao_right">
+                    <h1><a href="/articles/${article2.article_id}">${article2.title}</a></h1>
+                    <p><a href="/articles/${article2.article_id}">${article2.content}...</a></p>
+                </div>
+            `;
+        }
+
+        const theThaoBottomContainer = document.querySelector(".thethao_bottom");
+        theThaoBottomContainer.innerHTML = "";
+
+        theThaoArticles.slice(2, 5).forEach(article => {
+            theThaoBottomContainer.innerHTML += `
+                <li class="thethao_ct">
+                    <a href="/articles/${article.article_id}"><b>${article.title}</b></a>
+                </li>
+            `;
+        });
+		
+
 	
 
  }  catch (error) {
