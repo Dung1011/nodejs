@@ -59,6 +59,25 @@ app.get("/api/articles", (req, res) => {
       ORDER BY article_id DESC
       
   `;
+  app.get("/matches", (req, res) => {
+    const sql = `
+        SELECT 
+            m.id, 
+            m.match_date, 
+            home.name AS home_team, 
+            home.logo_url AS home_logo, 
+            away.name AS away_team, 
+            away.logo_url AS away_logo
+        FROM matches m
+        JOIN teams home ON m.home_team_id = home.id
+        JOIN teams away ON m.away_team_id = away.id
+        ORDER BY m.match_date;
+    `;
+    db.query(sql, (err, result) => {
+        if (err) throw err;
+        res.json(result);
+    });
+});  
 
   db.query(query, (err, results) => {
       if (err) {

@@ -464,13 +464,17 @@ right:0px;
 }
 .small {
 	width: 100%;
-	padding:10px;
+	padding:0 10px 10px 10px;
 }
 .small1 {
 	list-style: none;
 	display: flex;
 	justify-content: space-around;
 	width: 100%;
+	align-items: center; 
+}
+.small_iteam a{
+	font-size: 13px;
 }
 .small_iteam a:hover {
 	color: blue;
@@ -619,28 +623,36 @@ right:0px;
 .laisuat_2 {
 	display: flex;
 	list-style: none;
-	justify-content: space-around;
+	gap:20px;
+	
 }
-.laisuat_3 {
-	font-size: 13px;
+.laisuat3 {
+	font-size: 12px;
 }
+
+
 .laisuat_1 {
 	margin-top: 20px;
 	background-color: #e5e5e5;
-	padding: 20px;
+	padding: 10px;
 	margin-left: 20px;
 }
 .net1 {
 	list-style: none;
 	display: flex;
-	justify-content: space-around;
+	gap:16px;
 	background-color: #f3f6fc;
+	align-items: center;
+
+}
+.net2{
+	font-size: 12px;
 }
 
 .net {
 	background-color: #f3f6fc;
 	margin-top: 10px;
-	padding: 20px;
+	padding: 20px 20px 0 20px;
 	margin-left: 20px;
 }
 
@@ -655,6 +667,7 @@ right:0px;
 }
 .usd2{
 	padding-top: 10px;
+	padding-right: 10px;
 }
 .usd1 h1 {
 	font-size: 15px;
@@ -663,8 +676,47 @@ right:0px;
 	display: flex;
 	margin-left: 20px;
 	background-color: #f3f6fc;
+	padding-bottom: 10px;
 	
 }
+.giaitri {
+	display: flex;
+	gap: 10px;
+	padding-left: 20px;
+	justify-content: space-around;
+	}
+	.giaitri h1 a{
+			font-size: 14px;
+			line-height: 1.2;
+			display: block;
+	}
+	.giaitri_pr {
+		border-right: 1px solid #e5e5e5;
+		width:200px;
+		padding: 0 10px 0 0;
+	}
+	.giaitri_right {
+		width:200px;
+	}
+	
+	.giaitri_bottom {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		margin-left: 20px;
+	}
+	.giaitri_ct {
+		width:180px;
+		gap:10px;
+	}
+	.giaitri_ct a b {
+		font-size:14px;
+	}
+	
+	.giaitri_ct a:hover {
+		color: blue;
+	}
+	
 .schedule {
 	display: flex;
 	padding-left: 15px;
@@ -680,19 +732,21 @@ right:0px;
 	cursor: pointer;
 	color: #ccc;
 	position: absolute;
-	top: 0;
+	
 	bottom: 0;
 	z-index: 2;
+	border: 1px solid #e5e5e5;
 }
 
 .schedule-button-prev {
 	left: 0;
+	height: 83.64px;
 }
 
 .schedule-button-next {
 	right: 0;
+	height: 83.64px;
 }
-
 .schedule-button:hover {
 	background: rgba(204, 204, 204, 0.3);
 }
@@ -710,7 +764,7 @@ right:0px;
 
 .match {
 	flex: 1 1 33%;
-	min-width: 200px;
+	min-width: 140px;
 	border: 1px solid #ddd;
 	background-color: #f7f7f7;
 	padding: 10px;
@@ -738,10 +792,14 @@ right:0px;
 .team img {
 	width: 12px;
 	height: 8px;
+	object-fit: cover;
 }
-
+.CTR1{
+	margin-top: 20px;
+}
 .CTR2 {
 	padding-top: 10px;
+	margin-top: 10px;
 }
 .CTR3 {
 	padding-top: 10px;
