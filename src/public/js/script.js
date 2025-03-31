@@ -1,4 +1,4 @@
-//bóng đá
+0; //bóng đá
 function slideHorizontal(elementSlide, slideRatio) {
   elementSlide.style.transition = "all 0.5s ease-in-out";
   elementSlide.style.transform = `translateX(${slideRatio}%)`;
@@ -72,8 +72,6 @@ const slidePrevHorizontalFn = ({
 };
 
 const slideNextVerticalFn = ({
-  btn,
-  prevBtn,
   slideElement,
   ratio,
   currentSlideRatio,
@@ -90,14 +88,11 @@ const slideNextVerticalFn = ({
   slideVertical(slideElement, currentSlideRatio);
 };
 const slidePrevVerticalFn = ({
-  btn,
-  nextBtn,
   slideElement,
   ratio,
   currentSlideRatio,
   setCurrentSlideRatio,
   max = 0,
-  min = -100,
 }) => {
   if (currentSlideRatio + ratio >= max) {
     setCurrentSlideRatio(max);
@@ -553,14 +548,16 @@ async function fetchAndRenderArticles() {
   }
 }
 
+// bóng đá
 async function loadMatches() {
   try {
-    const response = await fetch("http://localhost:8080/matches"); // API lấy dữ liệu từ MySQL
+    const response = await fetch("http://localhost:8080/matches");
     const matches = await response.json();
     const matchesContainer = document.querySelector(".matches");
-    matchesContainer.innerHTML = ""; // Xóa dữ liệu cũ
-
-    matchesContainer.innerHTML = matches.map((match) => `
+    matchesContainer.innerHTML = "";
+    matchesContainer.innerHTML = matches
+      .map(
+        (match) => `
       <div class="match">
         <span class="time">${new Date(match.match_date).toLocaleString(
           "vi-VN",
@@ -578,16 +575,471 @@ async function loadMatches() {
         </div>
       </div>
     `
-  )
-  .join(""); // Kết hợp các phần tử thành một chuỗi HTML duy nhất
-
+      )
+      .join("");
   } catch (error) {
-    console.error("Lỗi khi tải dữ liệu:", error);
-  } 
+    console.error("Lỗi tải dữ liệu:", error);
+  }
 }
 
-// Gọi hàm loadMatches() khi trang tải
 loadMatches();
 
-// Gọi hàm khi trang load
 window.onload = fetchAndRenderArticles;
+
+async function fetchVideos() {
+  try {
+    const response = await fetch("/api/articles");
+    const articles = await response.json();
+
+    const sidebar = document.querySelector(".sidebar");
+    // sidebar.innerHTML = "";
+
+    articles.forEach((article) => {
+      if (!article.video_url) return;
+
+      const videoItem = document.createElement("div");
+      console.log(videoItem); // Kiểm tra xem có tạo được div không
+      videoItem.classList.add("video-item");
+      videoItem.setAttribute(
+        "onclick",
+        `loadVideo('${article.video_url}', '${article.title}')`
+      );
+
+      videoItem.innerHTML = `
+              <video>
+                  <source src="${article.video_url}" type="video/mp4" />
+              </video>
+              <div class="info">
+                  <div class="title">${article.title}</div>
+                  <div class="meta"> ${article.category_name}</div>
+                  <div class="time">03:20</div>
+              </div>
+          `;
+      console.log("Thêm vào sidebar:", videoItem);
+
+      sidebar.appendChild(videoItem);
+    });
+  } catch (error) {
+    console.error("Lỗi khi tải video:", error);
+  }
+}
+
+fetchVideos();
+
+async function fetchAndRenderSections() {
+  try {
+    const response = await fetch("/api/articles");
+    const articles = await response.json();
+    const khoaHocArticles = articles.filter(
+      (article) => article.category_id === 12
+    );
+    renderKhoaHoc(khoaHocArticles);
+    renderCaVoi(khoaHocArticles);
+    renderBoxTo4(khoaHocArticles);
+  } catch (error) {
+    console.error("Lỗi khi fetch dữ liệu:", error);
+  }
+}
+
+// Hàm render phần Khoa Học (1 bài)
+function renderKhoaHoc(articles) {
+  const container = document.querySelector(" .future");
+  container.innerHTML = "";
+  articles.sort((a, b) => a.article_id - b.article_id);
+
+  if (articles[0]) {
+    const article = articles[0];
+    container.innerHTML = `
+    <div class="future">
+      <div class="future_img">
+        <a href="">
+          <img src="${article.image_url}" alt="${article.title}" 
+               style="width: 455px; height: 273px" />
+        </a>
+      </div>
+      <div class="future_pr">
+        <h1><a href="">${article.title}</a></h1>
+        <p style="font-size:13px; margin-top:8px;">
+          <a href="${article.link}">${article.content}</a>
+        </p>
+      </div>
+    </div>
+  `;
+  }
+}
+
+// Hàm render phần Cá Voi (2 bài)
+function renderCaVoi(articles) {
+  const container = document.querySelector(".main_cavoi");
+  container.innerHTML = "";
+
+  if (articles[1]) {
+    const article1 = articles[1];
+    container.innerHTML += `
+      <div class="cavoi">
+        <div class="cavoi_img">
+          <a href="${article1.link}">
+            <img src="${article1.image_url}" alt="${article1.title}" />
+          </a>
+          <h1 style= "font-size:21px; border-bottom:1px solid #e5e5e5; padding-bottom:10px;"><a href="${article1.link}">${article1.title}</a></h1>
+        </div>
+      </div>
+    `;
+  }
+
+  if (articles[2]) {
+    const article1 = articles[2];
+    container.innerHTML += `
+      <div class="cavoi">
+        <div class="cavoi_img">
+          <a href="${article1.link}">
+            <img src="${article1.image_url}" alt="${article1.title}" />
+          </a>
+          <h2 style="font-size:21px; "><a href="${article1.link}">${article1.title}</a></h2>
+        </div>
+      </div>
+    `;
+  }
+}
+// hàm render box-to-4
+function renderBoxTo4(articles) {
+  const container = document.querySelector(".box_to_4");
+  container.innerHTML = "";
+
+  articles.slice(3, 7).forEach((article) => {
+    container.innerHTML += `
+      <div class="laser">
+        <h1 style="font-size:18px;">
+          <a href="${article.link}">${article.title}</a>
+        </h1>
+        <a href="${article.link}">
+          <img src="${article.image_url}" alt="${article.title}" 
+               style="width: 120px; height: 72px" />
+        </a>
+      </div>
+    `;
+  });
+}
+fetchAndRenderSections();
+
+///////// Thời sự
+async function fetchthoiSuArticles() {
+  try {
+    const response = await fetch("api/articles");
+    const articles = await response.json();
+
+    // Lọc bài viết thuộc danh mục Thời sự (category_id = 13)
+    const thoiSuArticles = articles.filter(
+      (article) => article.category_id === 13
+    );
+
+    // Lấy 2 bài viết đầu tiên
+    const twoArticles = thoiSuArticles.slice(0, 2);
+
+    // Gọi hàm render cho Thời sự
+    renderThoiSuData(twoArticles);
+  } catch (error) {
+    console.error("Có lỗi khi lấy dữ liệu bài viết:", error);
+  }
+}
+
+// Hàm render bài viết Thời sự
+function renderThoiSuData(articles) {
+  const container = document.querySelector(".thoisu_main");
+  container.innerHTML = "";
+  const firstArticle = articles[0];
+  const firstArticleHTML = `
+    <div class="thoisu_img_pr">
+      <div class="thoisu_img">
+        <a href="${firstArticle.link}">
+          <img src="${firstArticle.image_url}" alt="${firstArticle.title}" />
+        </a>
+      </div>
+      <div class="thoisu_pr">
+        <h1>
+          <a href="${firstArticle.link}">${firstArticle.title}</a>
+        </h1>
+        <p>
+          <a href="${firstArticle.link}">${firstArticle.content}</a>
+        </p>
+      </div>
+    </div>
+  `;
+  container.innerHTML += firstArticleHTML;
+
+  const secondArticle = articles[1];
+  const secondArticleHTML = `
+    <div class="thoisu_article">
+      <h1>
+        <a href="${secondArticle.link}">${secondArticle.title}</a>
+      </h1>
+      <p>
+        <a href="${secondArticle.link}">${secondArticle.content}</a>
+      </p>
+    </div>
+  `;
+  container.innerHTML += secondArticleHTML;
+}
+fetchthoiSuArticles();
+
+///////// Thế giới
+async function fetchtheGioiArticles() {
+  try {
+    const response = await fetch("api/articles");
+    const articles = await response.json();
+
+    const theGioiArticles = articles.filter(
+      (article) => article.category_id === 14
+    );
+    const twoArticles = theGioiArticles.slice(0, 2);
+    renderTheGioiData(twoArticles);
+  } catch (error) {
+    console.error("Có lỗi khi lấy dữ liệu bài viết:", error);
+  }
+}
+function renderTheGioiData(articles) {
+  const container = document.querySelector(".thegioi_main");
+  container.innerHTML = "";
+
+  const firstArticle = articles[0];
+  const firstArticleHTML = `
+    <div class="thegioi_img_pr">
+      <div class="thegioi_img">
+        <a href="${firstArticle.link}">
+          <img src="${firstArticle.image_url}" alt="${firstArticle.title}" />
+        </a>
+      </div>
+      <div class="thegioi_pr">
+        <h1>
+          <a href="${firstArticle.link}">${firstArticle.title}</a>
+        </h1>
+        <p>
+          <a href="${firstArticle.link}">${firstArticle.content}</a>
+        </p>
+      </div>
+    </div>
+  `;
+  container.innerHTML += firstArticleHTML;
+
+  const secondArticle = articles[1];
+  const secondArticleHTML = `
+    <div class="thegioi_article">
+      <h1>
+        <a href="${secondArticle.link}">${secondArticle.title}</a>
+      </h1>
+      <p>
+        <a href="${secondArticle.link}">${secondArticle.content}</a>
+      </p>
+    </div>
+  `;
+  container.innerHTML += secondArticleHTML;
+}
+fetchtheGioiArticles();
+
+///Pháp luật
+
+async function fetchphapLuatArticles() {
+  try {
+    const response = await fetch("api/articles");
+    const articles = await response.json();
+
+    const phapLuatArticles = articles.filter(
+      (article) => article.category_id === 6
+    );
+    const twoArticles = phapLuatArticles.slice(0, 2);
+    renderPhapLuatData(twoArticles);
+  } catch (error) {
+    console.error("Có lỗi khi lấy dữ liệu bài viết:", error);
+  }
+}
+function renderPhapLuatData(articles) {
+  const container = document.querySelector(".phapluat_main");
+  container.innerHTML = "";
+
+  const firstArticle = articles[0];
+  const firstArticleHTML = `
+    <div class="phapluat_img_pr">
+      <div class="phapluat_img">
+        <a href="${firstArticle.link}">
+          <img src="${firstArticle.image_url}" alt="${firstArticle.title}" />
+        </a>
+      </div>
+      <div class="phapluat_pr">
+        <h1 >
+          <a href="${firstArticle.link}">${firstArticle.title}</a>
+        </h1>
+        <p >
+          <a href="${firstArticle.link}">${firstArticle.content}</a>
+        </p>
+      </div>
+    </div>
+  `;
+  container.innerHTML += firstArticleHTML;
+
+  const secondArticle = articles[1];
+  const secondArticleHTML = `
+    <div class="phapluat_article">
+      <h1 >
+        <a href="${secondArticle.link}">${secondArticle.title}</a>
+      </h1>
+      <p>
+        <a href="${secondArticle.link}">${secondArticle.content}</a>
+      </p>
+    </div>
+  `;
+  container.innerHTML += secondArticleHTML;
+}
+fetchphapLuatArticles();
+
+////////////Tâm sự
+
+async function fetchTamsuArticles() {
+  try {
+    const response = await fetch("api/articles");
+    const articles = await response.json();
+    const tamsuArticles = articles.filter(
+      (article) => article.category_id === 15
+    );
+    renderTamsuData(tamsuArticles);
+  } catch (error) {
+    console.error("Có lỗi khi lấy dữ liệu bài viết:", error);
+  }
+}
+
+function renderTamsuData(articles) {
+  const container = document.querySelector(".tamsu_pr");
+  container.innerHTML = "";
+  const firstArticle = articles[0];
+  const firstArticleHTML = `
+    <div class="tamsu_pr_1">
+      <i class="fa-regular fa-heart">
+        <a href="${firstArticle.link}">
+          ${firstArticle.title}
+        </a>
+      </i>
+      <p style="font-size:14px;">
+        <a href="${firstArticle.link}">
+          ${firstArticle.content}
+        </a>
+      </p>
+    </div>
+  `;
+  container.innerHTML += firstArticleHTML;
+
+  // Lấy bài thứ hai (tamsu_pr_3)
+  const secondArticle = articles[1];
+  const secondArticleHTML = `
+    <div class="tamsu_pr_2">
+      <div class="tamsu_pr_3">
+        <i class="fa-regular fa-heart">
+          <a href="${secondArticle.link}">
+            ${secondArticle.title}
+          </a>
+        </i>
+        <p>
+          <a href="${secondArticle.link}">
+            ${secondArticle.content}
+          </a>
+        </p>
+      </div>
+  `;
+
+  // Lấy bài thứ ba (tamsu_pr_4)
+  const thirdArticle = articles[2];
+  const thirdArticleHTML = `
+    <div class="tamsu_pr_4">
+      <i class="fa-regular fa-heart">
+        <a href="${thirdArticle.link}">
+          ${thirdArticle.title}
+        </a>
+      </i>
+      <p>
+        <a href="${thirdArticle.link}">
+          ${thirdArticle.content}
+        </a>
+      </p>
+    </div>
+  </div>
+  `;
+
+  container.innerHTML += secondArticleHTML + thirdArticleHTML;
+}
+
+fetchTamsuArticles();
+
+async function fetchEbankArticles() {
+  try {
+    const response = await fetch("api/articles");
+    const articles = await response.json();
+
+    const EbankArticles = articles.filter(
+      (article) => article.category_id === 2
+    );
+    const threeArticles = EbankArticles.slice(0, 4);
+
+    renderEbankData(threeArticles);
+  } catch (error) {
+    console.error("Có lỗi khi lấy dữ liệu bài viết:", error);
+  }
+}
+
+function renderEbankData(articles) {
+  const container = document.querySelector(".news-list");
+  container.innerHTML = "";
+
+  articles.forEach((article) => {
+    const articleHTML = `
+      <div class="news-item">
+        <img
+          src="${article.image_url}"  
+          alt=""       
+        />
+        <p>
+          <a href="${article.link}">${article.title}</a>
+        </p>
+      </div>
+    `;
+    container.innerHTML += articleHTML;
+  });
+}
+
+fetchEbankArticles();
+
+/////////////ý kiến
+async function fetchYkienArticles() {
+  try {
+    const response = await fetch("api/articles");
+    const articles = await response.json();
+
+    const YkienArticles = articles.filter(
+      (article) => article.category_id === 16
+    );
+    const fourArticles = YkienArticles.slice(0, 4);
+    renderYkienData(fourArticles);
+  } catch (error) {
+    console.error("Có lỗi khi lấy dữ liệu bài viết:", error);
+  }
+}
+
+function renderYkienData(articles) {
+  const container = document.querySelector(".ykien_box");
+  container.innerHTML = "";
+
+  articles.forEach((article) => {
+    const articleHTML = `
+      
+      <h1>
+        <a href="${article.link}">
+        ${article.title}
+        </a>
+      </h1>
+      <p>
+        <a href="${article.link}">${article.content}</a>
+      </p>
+    
+    `;
+    container.innerHTML += articleHTML;
+  });
+}
+
+fetchYkienArticles();

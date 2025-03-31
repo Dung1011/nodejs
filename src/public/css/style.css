@@ -973,9 +973,8 @@ right:0px;
 .main_future {
 	display: flex;
 	justify-content: space-around;
-	align-items: center;
 	position: relative;
-	margin-top:10px;
+	margin-top:20px;
 }
 .future {
 	display: flex;
@@ -1007,7 +1006,7 @@ right:0px;
 	width: 279px;
 	display: flex;
 	flex-direction: column;
-	margin-top: 10px;
+	
 	align-items: center;
 	margin-left: 40px;
 }
@@ -1091,6 +1090,56 @@ right:0px;
 	margin-top: 30px;
 }
 .thoisu_pr {
+	margin-top: 5px;
+}
+
+.thegioi {
+	flex: 1;
+	max-width: 355px;
+}
+.thegioi_main h1 {
+	font-size: 15px;
+}
+.thegioi_main {
+	max-width: 355px;
+	margin-top: 20px;
+}
+.thegioi_img_pr {
+	max-width: 355px;
+}
+.thegioi_img img {
+	width: 340px;
+	height: 204px;
+}
+.thegioi_article {
+	margin-top: 30px;
+}
+.thegioi_pr {
+	margin-top: 5px;
+}
+
+.phapluat {
+	flex: 1;
+	max-width: 355px;
+}
+.phapluat_main h1 {
+	font-size: 15px;
+}
+.phapluat_main {
+	max-width: 355px;
+	margin-top: 20px;
+}
+.phapluat_img_pr {
+	max-width: 355px;
+}
+.phapluat_img img {
+	width: 340px;
+	height: 204px;
+}
+.phapluat_article {
+	margin-top: 30px;
+}
+.phapluat_pr {
 	margin-top: 5px;
 }
 .tamsu {
